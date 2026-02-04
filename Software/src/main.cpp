@@ -54,6 +54,7 @@ void setup() {
 // Callback function for the trellis, called when a buttons state changes
 TrellisCallback btnPress(keyEvent evt) {
   adaline.invertInput(evt.bit.NUM);
+  updateDisplay();
   return 0;
 }
 
@@ -109,8 +110,7 @@ void updateDisplay() {
   } while (u8g2.nextPage());
 }
 
-// To find all connected i2c devices
-// You can scan the i2c bus for devices
+//  Scan the i2c bus to find all connected i2c devices
 void scanI2C() {
   Wire.begin();
   // loop trough all the i2c addresses
