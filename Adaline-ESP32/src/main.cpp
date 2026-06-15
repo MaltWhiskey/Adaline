@@ -151,7 +151,7 @@ void loop() {
           snprintf(buffer, sizeof(buffer), "%+.2f",
                    adaline.getWeight(i) * adaline.getInput(i));
           u8g2.setFont(u8g2_font_5x7_tr);
-          u8g2.drawStr(i / 4 * 32, i % 4 * 10 + 10, buffer);
+          u8g2.drawStr(i % 4 * 32, i / 4 * 10 + 10, buffer);
         }
         snprintf(buffer, sizeof(buffer), "Bias = %+.2f", adaline.getBias());
         u8g2.drawStr(0, 5 * 10 + 10, buffer);
