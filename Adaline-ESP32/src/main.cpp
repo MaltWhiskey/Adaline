@@ -11,10 +11,15 @@
 #undef BLUE
 #define LEDS NEO_TRELLIS_NUM_KEYS + 1
 
+#if ESP32
 const uint8_t SDA_PIN = 39;
 const uint8_t SCL_PIN = 37;
 const static uint8_t BTN_negative = 35;
 const static uint8_t BTN_positive = 33;
+#else
+const static uint8_t BTN_positive = 2;
+const static uint8_t BTN_negative = 3;
+#endif
 const static uint8_t OLED_COLS = 16;
 const static uint8_t OLED_ROWS = 2;
 
@@ -38,11 +43,13 @@ void setup() {
   pinMode(BTN_positive, INPUT_PULLUP);
   pinMode(BTN_negative, INPUT_PULLUP);
 
+#if ESP32
   // Lock I2C pins directly on the hardware.
   // Every library must now use pin 39 en 37
   Wire.setPins(SDA_PIN, SCL_PIN);
   Wire.begin();
   Wire.setClock(400000);
+#endif
 
   // initialize NeoTrellis@0x2E
   if (!trellis.begin(0x2E)) {
@@ -56,12 +63,10 @@ void setup() {
     }
   }
   // initialize the oled display
-  /*
   if (!u8g2.begin())
     Serial.println("SSD1306 failed to initialize");
   else
     Serial.println("SSD1306 initialized");
-  */
 
   // initialize the lcd display
   lcd.begin(OLED_COLS, OLED_ROWS);
@@ -143,20 +148,18 @@ void loop() {
       target[LEDS - 1] = Color(0, 0, 255 * sigmoid);
 
     // Update the oled display with the current output
-    /*
-      u8g2.firstPage();
-      do {
-        char buffer[32];
-        for (uint8_t i = 0; i < adaline.n; i++) {
-          snprintf(buffer, sizeof(buffer), "%+.2f",
-                   adaline.getWeight(i) * adaline.getInput(i));
-          u8g2.setFont(u8g2_font_5x7_tr);
-          u8g2.drawStr(i % 4 * 32, i / 4 * 10 + 10, buffer);
-        }
-        snprintf(buffer, sizeof(buffer), "Bias = %+.2f", adaline.getBias());
-        u8g2.drawStr(0, 5 * 10 + 10, buffer);
-      } while (u8g2.nextPage());
-    */
+    u8g2.firstPage();
+    do {
+      char buffer[32];
+      for (uint8_t i = 0; i < adaline.n; i++) {
+        snprintf(buffer, sizeof(buffer), "%+.2f",
+                 adaline.getWeight(i) * adaline.getInput(i));
+        u8g2.setFont(u8g2_font_5x7_tr);
+        u8g2.drawStr(i % 4 * 32, i / 4 * 10 + 10, buffer);
+      }
+      snprintf(buffer, sizeof(buffer), "Bias = %+.2f", adaline.getBias());
+      u8g2.drawStr(0, 5 * 10 + 10, buffer);
+    } while (u8g2.nextPage());
     update_display = false;
   }
 }
