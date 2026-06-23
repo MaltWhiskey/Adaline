@@ -130,6 +130,9 @@ const Color Color::PINK(0x80, 0x30, 0x80);
 const Color Color::CYAN(0x00, 0xFF, 0xFF);
 const Color Color::MAGENTA(0xFF, 0x00, 0xFF);
 const Color Color::BROWN(0x7B, 0x40, 0x13);
+const Color Color::POSITIVE(0x00, 0x00, 0x80);
+const Color Color::NEGATIVE(0x80, 0x00, 0x00);
+
 const uint8_t Color::GAMMA[256] = {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1,

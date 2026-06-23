@@ -6,9 +6,6 @@
 #include <U8g2lib.h>
 #include <Wire.h>
 #include <rgb_lcd.h>
-#undef RED
-#undef GREEN
-#undef BLUE
 #define LEDS NEO_TRELLIS_NUM_KEYS + 1
 
 #if ESP32
@@ -20,6 +17,7 @@ const static uint8_t BTN_positive = 33;
 const static uint8_t BTN_positive = 2;
 const static uint8_t BTN_negative = 3;
 #endif
+
 const static uint8_t OLED_COLS = 16;
 const static uint8_t OLED_ROWS = 2;
 
@@ -59,7 +57,7 @@ void setup() {
     for (int i = 0; i < LEDS - 1; i++) {
       trellis.activateKey(i, SEESAW_KEYPAD_EDGE_RISING);
       trellis.registerCallback(i, btnPress);
-      target[i] = Color::BLUE;
+      target[i] = adaline.getInput(i) > 0 ? Color::POSITIVE : Color::NEGATIVE;
     }
   }
   // initialize the oled display
@@ -78,7 +76,7 @@ TrellisCallback btnPress(keyEvent evt) {
   uint16_t i = evt.bit.NUM;
   adaline.invertInput(i);
   source[i] = Color(scalar[i], source[i], target[i]);
-  target[i] = adaline.getInput(i) > 0 ? Color::RED : Color::BLUE;
+  target[i] = adaline.getInput(i) > 0 ? Color::POSITIVE : Color::NEGATIVE;
   scalar[i] = 0;
   update_display = true;
   return 0;
@@ -113,7 +111,7 @@ void loop() {
       }
       for (int i = 0; i < LEDS - 1; i++) {
         source[i] = Color(scalar[i], source[i], target[i]);
-        target[i] = adaline.getInput(i) > 0 ? Color::RED : Color::BLUE;
+        target[i] = adaline.getInput(i) > 0 ? Color::POSITIVE : Color::NEGATIVE;
         scalar[i] = 0;
       }
       update_display = true;

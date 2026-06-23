@@ -16,7 +16,7 @@ extern uint8_t LavaPalette[];
  *be generated from a pallete, predefined values or randomly generated.
  *-------------------------------------------------------------------------------------*/
 class Color {
- public:
+  public:
   union {
     uint8_t r;
     uint8_t red;
@@ -30,7 +30,7 @@ class Color {
     uint8_t blue;
   };
 
- public:
+  public:
   static const Color BLACK;
   static const Color WHITE;
   static const Color RED;
@@ -42,30 +42,32 @@ class Color {
   static const Color CYAN;
   static const Color MAGENTA;
   static const Color BROWN;
+  static const Color NEGATIVE;
+  static const Color POSITIVE;
   static const uint8_t GAMMA[256];
 
- public:
+  public:
   Color();
-  Color(const Color& c);
+  Color(const Color &c);
   Color(const uint8_t red, const uint8_t green, uint8_t blue);
   Color(const uint8_t min, const uint8_t max);
-  Color(const uint8_t index, const uint8_t* pallete);
-  Color(const uint8_t scalar, const Color& source, const Color& target);
+  Color(const uint8_t index, const uint8_t *pallete);
+  Color(const uint8_t scalar, const Color &source, const Color &target);
 
-  Color& scale(const uint8_t scalar);
+  Color &scale(const uint8_t scalar);
   Color scaled(const uint8_t scalar) const;
-  Color& blend(const uint8_t scalar, const Color& target);
-  Color& maximize(const Color& c);
+  Color &blend(const uint8_t scalar, const Color &target);
+  Color &maximize(const Color &c);
 
-  Color& gamma();
+  Color &gamma();
   uint32_t bits();
 
-  Color& operator+=(const Color& c);
-  Color& operator-=(const Color& c);
+  Color &operator+=(const Color &c);
+  Color &operator-=(const Color &c);
 
-  Color operator+(const Color& c) const;
-  Color operator-(const Color& c) const;
-  bool operator==(const Color& c) const;
+  Color operator+(const Color &c) const;
+  Color operator-(const Color &c) const;
+  bool operator==(const Color &c) const;
   bool isBlack() const;
 };
 #endif
